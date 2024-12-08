@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Informações e Serviços</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>Portal de Informações e Serviços</h1>
+    </header>
+
+    <!-- Barra de Pesquisa -->
+    <div class="search-bar">
+        <input type="text" placeholder="Busque por serviços ou palavra-chave...">
+    </div>
+
+    <!-- Banners -->
+    <div class="banners">
+        {% for banner in banners %}
+            <div class="banner">
+                <img src="{{ banner.imagem.url }}" alt="{{ banner.titulo }}">
+                <p>{{ banner.descricao }}</p>
+                <a href="{{ banner.link }}" class="banner-link">Saiba mais</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Categorias e Serviços -->
+    <div class="categorias">
+        {% for categoria in categorias %}
+            <div class="categoria">
+                <h2>{{ categoria.nome }}</h2>
+                <p>{{ categoria.descricao }}</p>
+                <div class="servicos">
+                    {% for servico in categoria.servicos.all %}
+                        <div class="servico">
+                            {% if servico.icone %}
+                                <img src="{{ servico.icone.url }}" alt="{{ servico.nome }}" class="servico-icone">
+                            {% endif %}
+                            <p>{{ servico.nome }}</p>
+                            <a href="{{ servico.url }}" class="servico-link">Acessar</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Notícias -->
+    <section class="noticias">
+        <h2>Últimas Notícias</h2>
+        {% for noticia in noticias %}
+            <div class="noticia">
+                <h3>{{ noticia.titulo }}</h3>
+                <p>{{ noticia.conteudo }}</p>
+            </div>
+        {% endfor %}
+    </section>
+
+    <!-- Links Rápidos -->
+    <section class="links-rapidos">
+        <h2>Links Rápidos</h2>
+        <div class="links-container">
+            {% for link in links_rapidos %}
+                <div class="link">
+                    <img src="{{ link.icone.url }}" alt="{{ link.nome }}" class="link-icone">
+                    <a href="{{ link.url }}" class="link-nome">{{ link.nome }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Vídeos -->
+    <section class="videos">
+        <h2>Vídeos</h2>
+        {% for video in videos %}
+            <div class="video">
+                <h3>{{ video.titulo }}</h3>
+                <a href="{{ video.embed_url }}" target="_blank">
+                    {% with video.embed_url|slice:"-11:" as video_id %}
+                        <img src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg" alt="{{ video.titulo }}">
+                    {% endwith %}
+                </a>
+                <p>{{ video.descricao }}</p>
+            </div>
+        {% endfor %}
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 - Portal de Serviços para o Cidadão</p>
+    </footer>
+
+</body>
+</html>
